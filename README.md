@@ -1,1 +1,3 @@
-# champ-3r
+## Packages Installed
+- SQLite
+- SQLiteEditor
