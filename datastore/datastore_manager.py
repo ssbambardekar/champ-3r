@@ -1,5 +1,4 @@
 # Imports
-#
 import sqlite3
 import os
 from category import Category
@@ -7,14 +6,12 @@ from question import Question
 
 
 # Datastore manager class
-#
 class DataStoreManager:
     def __init__(self) -> None:
         pass
 
 
     # Initialize db connection
-    #     
     def initialize(self):
         try:
             datastore = os.getcwd() + "/datastore/champ-3r.db"  
@@ -28,13 +25,11 @@ class DataStoreManager:
 
 
     # Get root categories
-    #
     def get_root_categories(self):
         try:            
             db_connection = self.initialize()
 
             # Get all the categories from data store
-            #
             cursor = db_connection.execute('''
                                            SELECT * FROM category 
                                            WHERE parent_category_id IS NULL;
@@ -43,7 +38,6 @@ class DataStoreManager:
             db_connection.close();
 
             # Convert the rows into list of category objects
-            #
             category_list = []        
             for row in rows:
                 category = Category(row[0], row[1], row[2], row[3])  
@@ -55,13 +49,11 @@ class DataStoreManager:
 
 
     # Get child categories
-    #
     def get_child_categories(self, parent_category_id):
         try:            
             db_connection = self.initialize()
 
             # Get all the child categories related to a parent category from data store
-            #
             query_param = (int(parent_category_id),);
             cursor = db_connection.execute('''
                                            SELECT * FROM category 
@@ -71,7 +63,6 @@ class DataStoreManager:
             db_connection.close();
 
             # Convert the rows into list of category objects
-            #
             category_list = []        
             for row in rows:
                 category = Category(row[0], row[1], row[2], row[3])  
@@ -85,13 +76,11 @@ class DataStoreManager:
         
 
     # Get questions
-    #
     def get_questions(self, category_id):
         try:            
             db_connection = self.initialize()
 
             # Get all the questions related to a category from data store
-            #
             query_param = (int(category_id),);
             cursor = db_connection.execute('''
                                            SELECT * FROM category_question 
@@ -101,7 +90,6 @@ class DataStoreManager:
             db_connection.close();
 
             # Convert the rows into list of question objects
-            #
             question_list = []        
             for row in rows:
                 question = Question(row[0], row[1], row[2], row[3], row[3])  
@@ -115,7 +103,6 @@ class DataStoreManager:
 
 
 # Debug Code
-#
 if __name__ == "__main__":
     datastoreManager = DataStoreManager()
     category_list = datastoreManager.get_root_categories()

@@ -1,10 +1,9 @@
 # Imports
-#
 import sqlite3
 import os
 
+
 # Connect to the database
-#
 try:
     datastore = os.getcwd() + "/datastore/champ-3r.db"  
     db_connection = sqlite3.connect(datastore)
@@ -15,7 +14,6 @@ except Exception as ex:
 
 
 # Initialize database
-# 
 def create_categories():
     print(db_connection)
 
@@ -29,7 +27,6 @@ def create_categories():
 
 
 # Get datastore details
-#
 def get_datastore_details():
     print(db_connection)
 
@@ -41,7 +38,6 @@ def get_datastore_details():
 
 
 # Debug Code
-#
 if __name__ == "__main__":
 #    create_categories()
     get_datastore_details()

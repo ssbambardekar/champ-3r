@@ -1,4 +1,4 @@
-
+# Question class
 class Question:
     def __init__(self, id, name, description, category_id, points):
         self.id = id
