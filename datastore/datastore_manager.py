@@ -3,6 +3,7 @@ import sqlite3
 import os
 from category import Category
 from question import Question
+from question_answer import QuestionAnswer
 
 
 # Datastore manager class
@@ -14,7 +15,7 @@ class DataStoreManager:
     # Initialize db connection
     def initialize(self):
         try:
-            datastore = os.getcwd() + "/datastore/champ-3r.db"  
+            datastore = os.getcwd() + "/datastore/champ_3r.db"  
             db_connection = sqlite3.connect(datastore)
             if (db_connection is None):
                 raise Exception("Error in connecting to the data store as connection is null")
@@ -66,8 +67,6 @@ class DataStoreManager:
             category_list = []        
             for row in rows:
                 category = Category(row[0], row[1], row[2], row[3])  
-                print(category)
-
                 category_list.append(category)
 
             return category_list
@@ -83,7 +82,7 @@ class DataStoreManager:
             # Get all the questions related to a category from data store
             query_param = (int(category_id),);
             cursor = db_connection.execute('''
-                                           SELECT * FROM category_question 
+                                           SELECT * FROM question 
                                            WHERE category_id = ?;
                                            ''', query_param)
             rows = cursor.fetchall();
@@ -92,14 +91,37 @@ class DataStoreManager:
             # Convert the rows into list of question objects
             question_list = []        
             for row in rows:
-                question = Question(row[0], row[1], row[2], row[3], row[3])  
-                print(question)
-
+                question = Question(row[0], row[1], row[2], row[3], row[4])  
                 question_list.append(question)
 
             return question_list
         except Exception as ex:
             raise Exception("Error in getting questions from the data store.") from ex
+        
+
+    # Get question answers
+    def get_question_answers(self, question_id):
+        try:            
+            db_connection = self.initialize()
+
+            # Get all the question answerss related to a question from data store
+            query_param = (int(question_id),);
+            cursor = db_connection.execute('''
+                                           SELECT * FROM question_answer 
+                                           WHERE question_id = ?;
+                                           ''', query_param)
+            rows = cursor.fetchall();
+            db_connection.close();
+
+            # Convert the rows into list of question answer objects
+            question_answer_list = []        
+            for row in rows:
+                question_answer = QuestionAnswer(row[0], row[1], row[2], row[3], row[4])  
+                question_answer_list.append(question_answer)
+
+            return question_answer_list
+        except Exception as ex:
+            raise Exception("Error in getting question answers from the data store.") from ex        
 
 
 # Debug Code
@@ -107,16 +129,25 @@ if __name__ == "__main__":
     datastoreManager = DataStoreManager()
     category_list = datastoreManager.get_root_categories()
     for category in category_list:        
-        print (category.name)
+        print ("Category: ", category.id,  ", ", category.name, ", ", category.description, ", ", category.parent_category_id)        
 
         question_list = datastoreManager.get_questions(category.id)
         for question in question_list:
-            print (question.name)                
+            print ("Question: ", question.id,  ", ", question.text,  ", ", question.description,  ", ", question.max_points, ", ", question.category_id)
         
+            question_answer_list = datastoreManager.get_question_answers(question.id)
+            for question_answer in question_answer_list:
+                print ("QuestionAnswer: ", question_answer.id,  ", ", question_answer.text,  ", ", question_answer.description,  ", ", question_answer.points, ", ", question_answer.question_id)           
+
         child_category_list = datastoreManager.get_child_categories(category.id)
         for child_category in child_category_list:        
-            print (child_category.name)
+            print ("Child_Category: ", child_category.id,  ", ", child_category.name, ", ", child_category.description, ", ", child_category.parent_category_id)        
 
             question_list = datastoreManager.get_questions(child_category.id)
             for question in question_list:
-                print (question.name)                
+                print ("Child_Category_Questions: ", question.id,  ", ", question.text,  ", ", question.description, ", ", question.max_points,  ", ", question.category_id)
+
+                question_answer_list = datastoreManager.get_question_answers(question.id)
+                for question_answer in question_answer_list:
+                    print ("Child_Category_QuestionAnswer: ", question_answer.id,  ", ", question_answer.text,  ", ", question_answer.description,  ", ", question_answer.points, ", ", question_answer.question_id)           
+

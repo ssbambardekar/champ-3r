@@ -1,8 +1,8 @@
 # Question class
 class Question:
-    def __init__(self, id, name, description, category_id, points):
+    def __init__(self, id, text, description, max_points, category_id):
         self.id = id
-        self.name = name
+        self.text = text
         self.description = description
+        self.max_points = max_points        
         self.category_id = category_id
-        self.points = points
