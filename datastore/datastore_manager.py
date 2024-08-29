@@ -11,7 +11,6 @@ class DataStoreManager:
     def __init__(self) -> None:
         pass
 
-
     # Initialize db connection
     def initialize(self):
         try:
@@ -23,7 +22,6 @@ class DataStoreManager:
             return db_connection
         except Exception as ex:
             raise Exception("Error in connecting to the data store.") from ex
-
 
     # Get root categories
     def get_root_categories(self):
@@ -48,7 +46,6 @@ class DataStoreManager:
         except Exception as ex:
             raise Exception("Error in getting root categories from the data store.") from ex
 
-
     # Get child categories
     def get_child_categories(self, parent_category_id):
         try:            
@@ -71,8 +68,7 @@ class DataStoreManager:
 
             return categories
         except Exception as ex:
-            raise Exception("Error in getting child categories from the data store.") from ex
-        
+            raise Exception("Error in getting child categories from the data store.") from ex       
 
     # Get questions
     def get_questions(self, category_id):
@@ -98,7 +94,6 @@ class DataStoreManager:
         except Exception as ex:
             raise Exception("Error in getting questions from the data store.") from ex
         
-
     # Get question answers
     def get_question_answers(self, question_id):
         try:            
@@ -150,4 +145,3 @@ if __name__ == "__main__":
                 question_answers = datastoreManager.get_question_answers(question.id)
                 for question_answer in question_answers:
                     print ("Child_Category_QuestionAnswer: ", question_answer.id,  ", ", question_answer.text,  ", ", question_answer.description,  ", ", question_answer.points, ", ", question_answer.question_id)           
-

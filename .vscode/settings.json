@@ -1,5 +1,7 @@
 {
     "python.analysis.extraPaths": [
-        "./datastore"
+        "./datastore",
+        "./calculator",
+        "./ui"
     ]
 }

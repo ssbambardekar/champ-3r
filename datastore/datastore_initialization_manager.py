@@ -12,7 +12,6 @@ try:
 except Exception as ex:
     raise Exception("Error in connecting to the data store.") from ex
 
-
 # Initialize database
 def create_categories():
     print(db_connection)
@@ -24,7 +23,6 @@ def create_categories():
     ''')
     
     print(cursor.fetchall())
-
 
 # Get datastore details
 def get_datastore_details():

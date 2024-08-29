@@ -4,7 +4,11 @@ import os
 from sys import argv
 
 # Set imports path for datastore
-root_path = os.path.dirname(os.path.dirname(argv[0]))
+
+if __name__ == "__main__":
+    root_path = os.path.dirname(os.path.dirname(argv[0]))
+else:
+    root_path = os.path.dirname(argv[0])
 datastore_module_path = root_path + '/datastore'
 sys.path.insert(0, datastore_module_path)
 
@@ -18,11 +22,9 @@ class QuestionManager:
     def __init__(self) -> None:
         self.datastore_manager = DataStoreManager()
 
-
     # Get root categories
     def get_root_categories(self):
         return self.datastore_manager.get_root_categories()
-
 
     # Get questions with details
     def get_questions_with_details(self, category_id):
@@ -36,7 +38,6 @@ class QuestionManager:
 
         return questions_with_details
     
-    
     # Get child categories with details - Note that this goes only 1 level deep (i.e. no nested child categories are supported)
     def get_child_categories_with_details(self, parent_category_id):
         child_categories_with_details = []
@@ -48,7 +49,6 @@ class QuestionManager:
             child_categories_with_details.append(child_category_with_details)
 
         return child_categories_with_details
-    
 
     # Get category with details
     def get_category_with_details(self, category):
