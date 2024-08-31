@@ -11,9 +11,6 @@ sys.path.insert(0, datastore_module_path)
 from console_ui_manager import ConsoleUIManager
 
 
-# Display welcome message
-console_ui_manager = ConsoleUIManager()
-console_ui_manager.show_welcome_message()
-
 # Interact with the user
+console_ui_manager = ConsoleUIManager()
 console_ui_manager.interact_with_user()

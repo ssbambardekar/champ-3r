@@ -20,10 +20,28 @@ class ConsoleUIManager:
     def __init__(self) -> None:
         self.app = App()
         self.exit_character = 'x'
+        self.user_name = None
 
-    # Show welcome message    
-    def show_welcome_message(self):
-        print("Welcome to Champ-3r! Lets get you scored away!")
+    # Start user session    
+    def start_user_session(self):
+        print("Welcome to Champ-3r! Lets get you scored away!")        
+        selection_made = False
+        while (not selection_made):    
+            try:
+                self.user_name = input("Please enter your name: ")
+                if (self.user_name is None or self.user_name == ''):
+                    raise Exception()
+                
+                selection_made = True
+            except Exception:
+                continue
+
+        self.app.start_user_session(self.user_name)
+
+    # End user session    
+    def end_user_session(self):
+        print("All done! Have a fantastic day!")
+        self.app.end_user_session(self.user_name)    
 
     # Show and get root categories
     def show_and_get_root_categories(self):
@@ -74,7 +92,8 @@ class ConsoleUIManager:
         category_with_details = self.app.get_category_with_details(category.id)
         if len(category_with_details.questions_with_details) > 0:
             for question_with_details in category_with_details.questions_with_details:
-                question_answer = self.process_question(question_with_details)
+                question_answer = self.process_question(question_with_details)                
+                self.app.update_user_question_response(self.user_name, category.id, question_with_details.id, question_answer.id)
         else:
             print("No questions associated with category!")
 
@@ -83,8 +102,17 @@ class ConsoleUIManager:
             for child_category_with_details in category_with_details.child_categories_with_details:
                 self.process_category(child_category_with_details)
     
+    # Show sustainability results
+    def show_sustainability_results():
+        print("All done! Here are the results:")
+        print("Sustainability Score: ")
+        pass
+
     # Interact with user
     def interact_with_user(self):
+        # Start user session
+        self.start_user_session()
+
         # Show root categories
         root_categories = self.show_and_get_root_categories()
         
@@ -92,3 +120,9 @@ class ConsoleUIManager:
         for root_category in root_categories:            
             self.process_category(root_category)
             break;
+
+        # Show sustainability results
+        self.show_sustainability_results()
+
+        # End user session
+        self.end_user_session()
