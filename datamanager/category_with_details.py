@@ -18,7 +18,6 @@ from category import Category
 class CategoryWithDetails(Category):
     # Constructor
     def __init__(self, category):
-        Category.__init__(self, category.id, category.name, category.description, category.parent_category_id)
-        self.child_categories_with_details = []
+        Category.__init__(self, category.id, category.name, category.description, category.group)        
         self.questions_with_details = []
 

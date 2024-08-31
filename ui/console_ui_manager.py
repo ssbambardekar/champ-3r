@@ -43,17 +43,17 @@ class ConsoleUIManager:
         print("All done! Have a fantastic day!")
         self.app.end_user_session(self.user_name)    
 
-    # Show and get root categories
-    def show_and_get_root_categories(self):
-        print("Here are root categories:")
+    # Show categories
+    def show_categories(self):
+        print("Here are various categories:")
 
         index = 1
-        root_categories = self.app.get_root_categories()        
-        for root_category in root_categories:
+        categories = self.app.get_categories()        
+        for root_category in categories:
             print(index, "-", root_category.name)
             index += 1
 
-        return root_categories    
+        return categories    
 
     # Proess question with details
     def process_question(self, question_with_details):
@@ -97,15 +97,12 @@ class ConsoleUIManager:
         else:
             print("No questions associated with category!")
 
-        # Process child categories
-        if len(category_with_details.child_categories_with_details) > 0:
-            for child_category_with_details in category_with_details.child_categories_with_details:
-                self.process_category(child_category_with_details)
-    
     # Show sustainability results
-    def show_sustainability_results():
+    def show_sustainability_results(self):
+        sustainability_results = self.app.get_user_sustainability_score(self.user_name)
+
         print("All done! Here are the results:")
-        print("Sustainability Score: ")
+        print("Sustainability Score: ", sustainability_results.score)
         pass
 
     # Interact with user
@@ -113,12 +110,12 @@ class ConsoleUIManager:
         # Start user session
         self.start_user_session()
 
-        # Show root categories
-        root_categories = self.show_and_get_root_categories()
+        # Show categories
+        categories = self.show_categories()
         
         # Process root categories
-        for root_category in root_categories:            
-            self.process_category(root_category)
+        for category in categories:            
+            self.process_category(category)
             break;
 
         # Show sustainability results

@@ -16,25 +16,24 @@ datastore_module_path = root_path + '/sustainability_calculator'
 sys.path.insert(0, datastore_module_path)
 
 from question_manager import QuestionManager
-from user_session import UserSession
-from user_question_response import UserQuestionResponse
+from user_session_manager import UserSessionManager
 from calculator import Calculator
 
 
 # App class
 class App:
-    # Statics
+    # Statics    
     question_manager = QuestionManager()
-    user_sessions = {}
-    calculator = Calculator()
-        
+    session_manager = UserSessionManager()    
+    calculator = Calculator(question_manager)
+
     # Constructor
     def __init__(self) -> None:
         pass
 
-  # Get root categories
-    def get_root_categories(self):
-        return App.question_manager.get_root_categories()        
+  # Get categories
+    def get_categories(self):
+        return App.question_manager.get_categories()        
 
     # Get category with details
     def get_category_with_details(self, category_id):
@@ -42,19 +41,17 @@ class App:
   
     # Start user session
     def start_user_session(self, user_name):
-        user_session = UserSession(user_name)
-        App.user_sessions[user_name] = user_session
+        App.session_manager.start_user_session(user_name)
 
     # End user session
     def end_user_session(self, user_name):
-        del App.user_sessions[user_name]
+        App.session_manager.end_user_session(user_name)
 
     # Update user question response
-    def update_user_question_response(self, user_name, category_id, question_id, question_answer_id):
-        user_question_response = UserQuestionResponse(category_id, question_id, question_answer_id)
-        App.user_sessions[user_name].user_question_responses.append(user_question_response)
+    def update_user_question_response(self, user_name, category_id, question_id, question_answer_id):        
+        App.session_manager.update_user_question_response(user_name, category_id, question_id, question_answer_id)
 
-    # get user sustainability score
+    # Get user sustainability score
     def get_user_sustainability_score(self, user_name):  
-        return App.calculator.calculate_sustainability_score(App.user_sessions[user_name])
+        return App.calculator.calculate_sustainability_score(App.session_manager.get_user_session(user_name))
   

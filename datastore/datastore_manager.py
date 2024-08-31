@@ -24,15 +24,14 @@ class DataStoreManager:
         except Exception as ex:
             raise Exception("Error in connecting to the data store.") from ex
 
-    # Get root categories
-    def get_root_categories(self):
+    # Get categories
+    def get_categories(self):
         try:            
             db_connection = self.initialize()
 
             # Get all the categories from data store
             cursor = db_connection.execute('''
-                                           SELECT * FROM category 
-                                           WHERE parent_category_id IS NULL;
+                                           SELECT * FROM category;
                                            ''')
             rows = cursor.fetchall();
             db_connection.close();
@@ -45,7 +44,7 @@ class DataStoreManager:
 
             return categories
         except Exception as ex:
-            raise Exception("Error in getting root categories from the data store.") from ex
+            raise Exception("Error in getting categories from the data store.") from ex
         
     # Get category
     def get_category(self, category_id):
@@ -68,30 +67,6 @@ class DataStoreManager:
             return category
         except Exception as ex:
             raise Exception("Error in getting category from the data store. category_id: ", category_id) from ex        
-
-    # Get child categories
-    def get_child_categories(self, parent_category_id):
-        try:            
-            db_connection = self.initialize()
-
-            # Get all the child categories related to a parent category from data store
-            query_param = (int(parent_category_id),);
-            cursor = db_connection.execute('''
-                                           SELECT * FROM category 
-                                           WHERE parent_category_id = ?;
-                                           ''', query_param)
-            rows = cursor.fetchall();
-            db_connection.close();
-
-            # Convert the rows into list of category objects
-            categories = []        
-            for row in rows:
-                category = Category(row[0], row[1], row[2], row[3])  
-                categories.append(category)
-
-            return categories
-        except Exception as ex:
-            raise Exception("Error in getting child categories from the data store.") from ex       
 
     # Get questions
     def get_questions(self, category_id):
@@ -145,9 +120,9 @@ class DataStoreManager:
 # Debug Code
 if __name__ == "__main__":
     datastoreManager = DataStoreManager()
-    categories = datastoreManager.get_root_categories()
+    categories = datastoreManager.get_categories()
     for category in categories:        
-        print ("Category: ", category.id,  ", ", category.name, ", ", category.description, ", ", category.parent_category_id)        
+        print ("Category: ", category.id,  ", ", category.name, ", ", category.description, ", ", category.group)        
 
         questions = datastoreManager.get_questions(category.id)
         for question in questions:
@@ -156,15 +131,4 @@ if __name__ == "__main__":
             question_answers = datastoreManager.get_question_answers(question.id)
             for question_answer in question_answers:
                 print ("QuestionAnswer: ", question_answer.id,  ", ", question_answer.text,  ", ", question_answer.description,  ", ", question_answer.points, ", ", question_answer.question_id)           
-
-        child_categories = datastoreManager.get_child_categories(category.id)
-        for child_category in child_categories:        
-            print ("Child_Category: ", child_category.id,  ", ", child_category.name, ", ", child_category.description, ", ", child_category.parent_category_id)        
-
-            questions = datastoreManager.get_questions(child_category.id)
-            for question in questions:
-                print ("Child_Category_Questions: ", question.id,  ", ", question.text,  ", ", question.description, ", ", question.max_points,  ", ", question.category_id)
-
-                question_answers = datastoreManager.get_question_answers(question.id)
-                for question_answer in question_answers:
-                    print ("Child_Category_QuestionAnswer: ", question_answer.id,  ", ", question_answer.text,  ", ", question_answer.description,  ", ", question_answer.points, ", ", question_answer.question_id)           
+     
