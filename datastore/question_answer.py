@@ -1,5 +1,6 @@
 # Question Answer class
 class QuestionAnswer:
+    # Constructor
     def __init__(self, id, text, description, question_id, points):
         self.id = id
         self.text = text

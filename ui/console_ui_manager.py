@@ -8,16 +8,17 @@ if __name__ == "__main__":
     root_path = os.path.dirname(os.path.dirname(argv[0]))
 else:
     root_path = os.path.dirname(argv[0])
-datastore_module_path = root_path + '/calculator'
+datastore_module_path = root_path + '/server'
 sys.path.insert(0, datastore_module_path)
 
-from question_manager import QuestionManager
+from app import App
 
 
 # Console UI manager class
 class ConsoleUIManager:
+    # Constructor
     def __init__(self) -> None:
-        self.question_manager = QuestionManager()
+        self.app = App()
         self.exit_character = 'x'
 
     # Show welcome message    
@@ -29,7 +30,7 @@ class ConsoleUIManager:
         print("Here are root categories:")
 
         index = 1
-        root_categories = self.question_manager.get_root_categories()        
+        root_categories = self.app.get_root_categories()        
         for root_category in root_categories:
             print(index, "-", root_category.name)
             index += 1
@@ -52,7 +53,7 @@ class ConsoleUIManager:
         selected_index = 0
         while (not selection_made):    
             try:
-                selected_index_str = input("Enter your selection (x=exit, b=back): ")
+                selected_index_str = input("Enter your selection (x=exit): ")
                 if (selected_index_str == self.exit_character):
                     sys.exit(0)                
                 selected_index = int(selected_index_str)
@@ -70,7 +71,7 @@ class ConsoleUIManager:
         # Process questions for the category
         print()
         print("Here are questions for category: ", category.name)
-        category_with_details = self.question_manager.get_category_with_details(category)
+        category_with_details = self.app.get_category_with_details(category.id)
         if len(category_with_details.questions_with_details) > 0:
             for question_with_details in category_with_details.questions_with_details:
                 question_answer = self.process_question(question_with_details)

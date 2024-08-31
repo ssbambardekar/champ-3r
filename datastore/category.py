@@ -1,5 +1,6 @@
 # Category class
 class Category:
+    # Constructor
     def __init__(self, id, name, description, parent_category_id):
         self.id = id
         self.name = name

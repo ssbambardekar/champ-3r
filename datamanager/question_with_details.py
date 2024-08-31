@@ -16,6 +16,7 @@ from question import Question
 
 # Question-With-Details class
 class QuestionWithDetails(Question):
+    # Constructor
     def __init__(self, question):
         Question.__init__(self, question.id, question.text, question.description, question.max_points, question.category_id)
         self.question_answers = []

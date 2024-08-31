@@ -2,6 +2,9 @@
     "python.analysis.extraPaths": [
         "./datastore",
         "./calculator",
-        "./ui"
+        "./ui",
+        "./server",
+        "./session",
+        "./datamanager"
     ]
 }

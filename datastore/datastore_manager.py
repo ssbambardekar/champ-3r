@@ -8,6 +8,7 @@ from question_answer import QuestionAnswer
 
 # Datastore manager class
 class DataStoreManager:
+    # Constructor
     def __init__(self) -> None:
         pass
 
@@ -45,6 +46,28 @@ class DataStoreManager:
             return categories
         except Exception as ex:
             raise Exception("Error in getting root categories from the data store.") from ex
+        
+    # Get category
+    def get_category(self, category_id):
+        try:            
+            db_connection = self.initialize()
+
+            # Get the requisite category from data store
+            query_param = (int(category_id),);
+            cursor = db_connection.execute('''
+                                           SELECT * FROM category 
+                                           WHERE id = ?;
+                                           ''', query_param)
+            rows = cursor.fetchall();
+            db_connection.close();
+
+            # Convert the rows into list of category objects            
+            for row in rows:
+                return Category(row[0], row[1], row[2], row[3])  
+
+            return category
+        except Exception as ex:
+            raise Exception("Error in getting category from the data store. category_id: ", category_id) from ex        
 
     # Get child categories
     def get_child_categories(self, parent_category_id):
