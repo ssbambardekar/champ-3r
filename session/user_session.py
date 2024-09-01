@@ -3,4 +3,4 @@ class UserSession:
     # Constructor
     def __init__(self, name):
         self.user_name = name
-        self.user_categories_responses = {}
+        self.user_categories_responses = {}     # Dictionary {category_id (int), UserCategoryResponses (object)}

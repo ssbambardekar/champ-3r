@@ -48,8 +48,9 @@ class App:
         App.session_manager.end_user_session(user_name)
 
     # Update user question response
-    def update_user_question_response(self, user_name, category_id, question_id, question_answer_id):        
-        App.session_manager.update_user_question_response(user_name, category_id, question_id, question_answer_id)
+    def update_user_question_response(self, user_name, category_id, question_id, question_answer_id):  
+        category_with_details = self.question_manager.get_category_with_details(category_id)      
+        App.session_manager.update_user_question_response(user_name, category_id, category_with_details.name, question_id, question_answer_id)
 
     # Get user sustainability score
     def get_user_sustainability_score(self, user_name):  

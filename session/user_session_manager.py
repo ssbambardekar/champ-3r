@@ -6,7 +6,7 @@ from user_category_responses import UserCategoryResponses
 # User session manager class
 class UserSessionManager:
     # Statics
-    user_sessions = {}
+    user_sessions = {}      # Dictionary {user_name (string), UserSession (object)}
 
     # Constructor
     def __init__(self) -> None:
@@ -26,8 +26,10 @@ class UserSessionManager:
         del UserSessionManager.user_sessions[user_name]
 
   # Update user question response
-    def update_user_question_response(self, user_name, category_id, question_id, question_answer_id):        
+    def update_user_question_response(self, user_name, category_id, category_name, question_id, question_answer_id):        
         if category_id not in UserSessionManager.user_sessions[user_name].user_categories_responses:
-            UserSessionManager.user_sessions[user_name].user_categories_responses[category_id] = UserCategoryResponses(category_id)
+            UserSessionManager.user_sessions[user_name].user_categories_responses[category_id] = UserCategoryResponses(category_id, category_name)
 
-        UserSessionManager.user_sessions[user_name].user_categories_responses[category_id].user_question_responses[question_id] = question_answer_id
+        user_session = UserSessionManager.user_sessions[user_name]
+        user_category_responses = user_session.user_categories_responses[category_id]
+        user_category_responses.user_question_responses[question_id] = question_answer_id

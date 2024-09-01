@@ -101,10 +101,17 @@ class ConsoleUIManager:
     def show_sustainability_results(self):
         sustainability_results = self.app.get_user_sustainability_score(self.user_name)
 
+        print("")
         print("All done! Here are the results:")
-        print("Sustainability Score: ", sustainability_results.score)
-        pass
+        print("-------------------------------")
+        print("User name: ", sustainability_results.user_name)
 
+        print("Sustainability Scores by Category:")
+        for score_by_category_name in sustainability_results.score_by_category_names:
+            print("Category: ", score_by_category_name, ", Score: ", sustainability_results.score_by_category_names[score_by_category_name])
+        
+        print("Total Sustainability Score: ", sustainability_results.total_score)
+        
     # Interact with user
     def interact_with_user(self):
         # Start user session
