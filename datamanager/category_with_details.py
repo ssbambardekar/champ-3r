@@ -1,6 +1,7 @@
 # Imports
 import sys
 import os
+import json
 from sys import argv
 
 # Set imports path for datastore
@@ -21,3 +22,6 @@ class CategoryWithDetails(Category):
         Category.__init__(self, category.id, category.name, category.description, category.group)        
         self.questions_with_details = []
 
+    # Convert to json
+    def toJson(self):
+        return json.dumps(self, default=lambda o: o.__dict__)    

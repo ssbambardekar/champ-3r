@@ -1,3 +1,6 @@
+# Imports
+import json
+
 # Category class
 class Category:
     # Constructor
@@ -6,3 +9,7 @@ class Category:
         self.name = name
         self.description = description
         self.group = group
+
+    # Convert to json
+    def toJson(self):
+        return json.dumps(self, default=lambda o: o.__dict__)    
