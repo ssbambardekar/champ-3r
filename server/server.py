@@ -3,34 +3,32 @@ import sys
 import os
 from sys import argv
 
-# Set imports path for calculator
 root_path = os.path.dirname(os.path.dirname(argv[0]))
-datastore_module_path = root_path + '/datamanager'
-sys.path.insert(0, datastore_module_path)
-datastore_module_path = root_path + '/session'
-sys.path.insert(0, datastore_module_path)
-datastore_module_path = root_path + '/sustainability_calculator'
-sys.path.insert(0, datastore_module_path)
+sys.path.insert(0, root_path)
 
-from question_manager import QuestionManager
-from user_session_manager import UserSessionManager
-from calculator import Calculator
+from flask import Flask, request, jsonify
+from flask_cors import CORS
+from constants import Constants
+from app import App
 
 
-# App class
-class App:
-    # Statics    
-    question_manager = QuestionManager()
-    session_manager = UserSessionManager()    
-    calculator = Calculator(question_manager)
+# Start server
+server_app = Flask(__name__)
+CORS(server_app)  # Enable CORS for AJAX requests
+app = App()
 
-    # Constructor
-    def __init__(self) -> None:
-        pass
 
-  # Get categories
-    def get_categories(self):
-        return App.question_manager.get_categories()        
+# Routes
+# Version route
+@server_app.route("/version", methods=["GET"])
+def version():    
+    return jsonify({"response": Constants.VERSION})
+
+
+# Get categories
+@server_app.route("/categories", methods=["GET"])
+def get_categories():
+    return app.question_manager.get_categories()        
 
     # Get category with details
     def get_category_with_details(self, category_id):
@@ -53,3 +51,7 @@ class App:
     def get_user_sustainability_score(self, user_name):  
         return App.calculator.calculate_sustainability_score(App.session_manager.get_user_session(user_name))
   
+
+# Debug Code
+if __name__ == "__main__":
+    server_app.run(debug=True)

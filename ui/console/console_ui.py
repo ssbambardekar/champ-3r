@@ -5,7 +5,7 @@ from sys import argv
 
 # Set imports path for calculator
 if __name__ == "__main__":
-    root_path = os.path.dirname(os.path.dirname(argv[0]))
+    root_path = os.path.dirname(os.path.dirname(os.path.dirname(argv[0])))
 else:
     root_path = os.path.dirname(argv[0])
 datastore_module_path = root_path + '/server'
@@ -14,8 +14,8 @@ sys.path.insert(0, datastore_module_path)
 from app import App
 
 
-# Console UI manager class
-class ConsoleUIManager:
+# Console UI class
+class ConsoleUI:
     # Constructor
     def __init__(self) -> None:
         self.app = App()
@@ -130,3 +130,10 @@ class ConsoleUIManager:
 
         # End user session
         self.end_user_session()
+
+
+# Main execution code
+if __name__ == "__main__":
+    # Interact with the user
+    console_ui = ConsoleUI()
+    console_ui.interact_with_user()

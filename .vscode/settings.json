@@ -6,6 +6,7 @@
         "./server",
         "./session",
         "./datamanager",
-        "./sustainability_calculator"
+        "./sustainability_calculator",
+        "./ui/console"
     ]
 }
