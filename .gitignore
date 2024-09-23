@@ -1,4 +1,7 @@
-datastore/__pycache__
-ui/__pycache__
-server/__pycache__
 datamanager/__pycache__
+datastore/__pycache__
+server/__pycache__
+sustainability_calculator/__pycache__
+ui/__pycache__
+
+
