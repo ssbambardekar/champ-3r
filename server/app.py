@@ -19,10 +19,10 @@ from calculator import Calculator
 
 # App class
 class App:
-    # Statics    
-    question_manager = QuestionManager()
-    session_manager = UserSessionManager()    
-    calculator = Calculator(question_manager)
+    # Internal statics    
+    _question_manager = QuestionManager()
+    _session_manager = UserSessionManager()    
+    _calculator = Calculator(_question_manager)
 
     # Constructor
     def __init__(self) -> None:
@@ -30,26 +30,26 @@ class App:
 
   # Get categories
     def get_categories(self):
-        return App.question_manager.get_categories()        
+        return App._question_manager.get_categories()        
 
     # Get category with details
     def get_category_with_details(self, category_id):
-        return App.question_manager.get_category_with_details(category_id)
+        return App._question_manager.get_category_with_details(category_id)
   
     # Start user session
     def start_user_session(self, user_name):
-        App.session_manager.start_user_session(user_name)
+        App._session_manager.start_user_session(user_name)
 
     # End user session
     def end_user_session(self, user_name):
-        App.session_manager.end_user_session(user_name)
+        App._session_manager.end_user_session(user_name)
 
     # Update user question response
     def update_user_question_response(self, user_name, category_id, question_id, question_answer_id):  
-        category_with_details = self.question_manager.get_category_with_details(category_id)      
-        App.session_manager.update_user_question_response(user_name, category_id, category_with_details.name, question_id, question_answer_id)
+        category_with_details = self._question_manager.get_category_with_details(category_id)      
+        App._session_manager.update_user_question_response(user_name, category_id, category_with_details.name, question_id, question_answer_id)
 
     # Get user sustainability score
     def get_user_sustainability_score(self, user_name):  
-        return App.calculator.calculate_sustainability_score(App.session_manager.get_user_session(user_name))
+        return App._calculator.calculate_sustainability_score(App._session_manager.get_user_session(user_name))
   

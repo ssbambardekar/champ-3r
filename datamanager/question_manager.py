@@ -17,7 +17,7 @@ from datacache import DataCache
 # Question manager class
 class QuestionManager:
     # Statics
-    datacache = DataCache()
+    _datacache = DataCache()
 
     # Constructor
     def __init__(self) -> None:
@@ -36,14 +36,14 @@ class QuestionManager:
 
     # Get categories
     def get_categories(self):
-        if len(QuestionManager.datacache.categories) == 0:
-            QuestionManager.datacache.categories = self.datastore_manager.get_categories()
+        if len(QuestionManager._datacache.categories) == 0:
+            QuestionManager._datacache.categories = self.datastore_manager.get_categories()
 
-        return QuestionManager.datacache.categories
+        return QuestionManager._datacache.categories
     
     # Get category with details
     def get_category_with_details(self, category_id):
-        if category_id not in QuestionManager.datacache.category_with_details_by_category_id:
+        if category_id not in QuestionManager._datacache.category_with_details_by_category_id:
             # Build category with details    
             category = self.datastore_manager.get_category(category_id)
             category_with_details = CategoryWithDetails(category)
@@ -60,40 +60,40 @@ class QuestionManager:
                 # Build and cache question answers
                 question_with_details.question_answers = self.datastore_manager.get_question_answers(question.id)
                 for question_answer in question_with_details.question_answers:
-                    QuestionManager.datacache.question_answer_by_question_answer_id[question_answer.id] = question_answer
+                    QuestionManager._datacache.question_answer_by_question_answer_id[question_answer.id] = question_answer
 
                 # Cache question
-                QuestionManager.datacache.question_with_details_by_question_id[question_with_details.id] = question_with_details
+                QuestionManager._datacache.question_with_details_by_question_id[question_with_details.id] = question_with_details
 
                 questions_with_details.append(question_with_details)
                 
             # Save max points for the category in cache
-            QuestionManager.datacache.max_category_points_by_category_id[category_id] = max_category_points
+            QuestionManager._datacache.max_category_points_by_category_id[category_id] = max_category_points
 
             # Save category with details in cache
-            QuestionManager.datacache.category_with_details_by_category_id[category_id] = category_with_details
+            QuestionManager._datacache.category_with_details_by_category_id[category_id] = category_with_details
 
-        return QuestionManager.datacache.category_with_details_by_category_id[category_id]
+        return QuestionManager._datacache.category_with_details_by_category_id[category_id]
 
     # Get max points for a given category
     def get_max_points_for_category(self, category_id):
-        return  QuestionManager.datacache.max_category_points_by_category_id[category_id]
+        return  QuestionManager._datacache.max_category_points_by_category_id[category_id]
 
     # Get total max points 
     def get_total_max_points(self):
         total_max_points = 0
-        if QuestionManager.datacache.total_max_points == 0:
-            for category_id in QuestionManager.datacache.max_category_points_by_category_id:
+        if QuestionManager._datacache.total_max_points == 0:
+            for category_id in QuestionManager._datacache.max_category_points_by_category_id:
                 total_max_points += self.get_max_points_for_category(category_id)
             
             # Cache total max points
-            QuestionManager.datacache.total_max_points = total_max_points
+            QuestionManager._datacache.total_max_points = total_max_points
 
-        return QuestionManager.datacache.total_max_points
+        return QuestionManager._datacache.total_max_points
     
     # Get question answer
     def get_question_answer(self, question_answer_id):
-        return QuestionManager.datacache.question_answer_by_question_answer_id[question_answer_id]
+        return QuestionManager._datacache.question_answer_by_question_answer_id[question_answer_id]
 
 
 # Debug Code
